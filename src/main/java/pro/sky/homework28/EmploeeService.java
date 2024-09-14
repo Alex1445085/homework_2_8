@@ -3,10 +3,10 @@ package pro.sky.homework28;
 import java.util.Set;
 
 public abstract class EmploeeService {
-    abstract String maxSalary(Integer salary);
-    abstract String minSalary(Integer salary);
-    abstract String setOfEploeesById(Integer departament);
-    abstract String setOfEmploees();
-    abstract void emploeesAbOvo();
 
+    abstract Emploee maxSalary(Integer salary);
+    abstract Emploee minSalary(Integer salary);
+    abstract Set findEmploees(Integer depId);
+    abstract Set eploeesInDepartment(Integer departament);
+    abstract Set allEmploees();
 }

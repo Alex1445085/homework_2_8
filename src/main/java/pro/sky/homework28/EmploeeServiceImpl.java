@@ -4,41 +4,50 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class EmploeeServiceImpl extends EmploeeService {
-    public Set<Emploee> emploees = new HashSet<>();
+    private static Set<Emploee> emploees = new HashSet<>();
 
     @Override
-    String maxSalary(Integer depId) {
+    public Emploee maxSalary(Integer depId) {
         Emploee emploeeInDepartament = emploees.stream()
                 .filter(emploee -> Objects.equals(emploee.getDepartmentNo(), depId))
                 .max(Comparator.comparing(Emploee::getSalary))
-                .orElseThrow(() -> new DepartmentNotFoundException("Отдел не найден"));
-        return "Наибольшая з/п в отделе #" + depId + " у сотрудника " + emploeeInDepartament.toString();
+                .orElseThrow(() -> new DepartmentNotFoundException("Department not found"));
+        return emploeeInDepartament;//"Наибольшая з/п в отделе #" + depId + " у сотрудника " +
     }
 
     @Override
-    String minSalary(Integer depId) {
-        Emploee emploeeInDepartament = emploees.stream()
-                    .filter(emploee -> Objects.equals(emploee.getDepartmentNo(), depId))
-                    .min(Comparator.comparing(Emploee::getSalary))
-                    .orElseThrow(() -> new DepartmentNotFoundException("Отдел не найден"));
-            return "Наименьшая з/п в отделе #" + depId + " у сотрудника " + emploeeInDepartament.toString();
+    public Emploee minSalary(Integer depId) {
+//        Optional<Emploee> emploeeInDepartment = Optional.ofNullable(Optional.of(emploees.stream()
+//                        .filter(emploee -> Objects.equals(emploee.getDepartmentNo(), depId))
+//                        .min(Comparator.comparing(Emploee::getSalary)).get())
+//                        .orElseThrow(() -> new DepartmentNotFoundException("Department not found")));
+        Emploee emploeeInDepartment = emploees.stream()
+                .filter(emploee -> Objects.equals(emploee.getDepartmentNo(), depId))
+                .min(Comparator.comparing(Emploee::getSalary))
+                .orElseThrow(() -> new DepartmentNotFoundException("Department not found"));
+        return  emploeeInDepartment;
     }
 
     @Override
-    String setOfEploeesById(Integer depId) {
+    public Set findEmploees(Integer depId) {
+        if (depId == null) { return allEmploees(); }
+        else { return eploeesInDepartment(depId); }
+    }
+
+    @Override
+    public Set eploeesInDepartment(Integer depId) {
         Set<Emploee> temp = emploees.stream()
                 .filter(emploee -> Objects.equals(emploee.getDepartmentNo(), depId))
                 .collect(Collectors.toSet());
-        return "Cписок сотрудников в отделе #" + depId + " : " + temp.toString();
+        return temp;          //"Cписок сотрудников в отделе #" + depId + " : " +
     }
 
     @Override
-    String setOfEmploees() {
-        return "Cписок всех сотрудников : " + emploees.toString();
+    public Set allEmploees() {
+        return emploees;      //"Cписок всех сотрудников : " + emploees.toString();
     }
 
-    @Override
-    void emploeesAbOvo() {
+    public static void emploeesAbOvo() {
         Emploee temp = new Emploee("Ivanov", "Ivan", 1, 86811);
         emploees.add(temp);
         temp = new Emploee("Petrov", "Petr", 2, 80000);
@@ -57,7 +66,7 @@ public class EmploeeServiceImpl extends EmploeeService {
         emploees.add(temp);
         temp = new Emploee("Vasin", "Nikolay", 1, 142000);
         emploees.add(temp);
-        temp = new Emploee("Gorin", "Nikk", 1, 162000);
+        temp = new Emploee("Gorin", "Nikk", 1, 82000);
         emploees.add(temp);
     }
 }

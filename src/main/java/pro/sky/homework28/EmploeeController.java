@@ -1,5 +1,6 @@
 package pro.sky.homework28;
 
+import jakarta.annotation.PostConstruct;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -11,29 +12,26 @@ import java.util.Set;
 @RestController
 @RequestMapping("/departments")
 public class EmploeeController {
-    Set<Emploee> emploee = new HashSet<>();
     EmploeeService serv = new EmploeeServiceImpl();
 
-    {
-        serv.emploeesAbOvo();
+    @PostConstruct
+    public void init() {
+        Set<Emploee> emploee = new HashSet<>();
+        EmploeeServiceImpl.emploeesAbOvo();
     }
 
     @GetMapping("/max-salary")
     public String maxSalary(@RequestParam("departmentId") Integer depId) {
-        return serv.maxSalary(depId);
+        return "Наибольшая з/п в отделе #" + depId + " у сотрудника: " + serv.maxSalary(depId).toString();
     }
 
     @GetMapping("min-salary")
     public String minSalary(@RequestParam("departmentId") Integer depId) {
-        return serv.minSalary(depId);
+        return "Наименьшая з/п в отделе #" + depId + " у сотрудника: " + serv.minSalary(depId).toString();
     }
 
     @GetMapping("/all")
-    public String setOfEmploeesById(@RequestParam(value = "departmentId", required = false) Integer depId) {
-        if (depId != null) {
-            return serv.setOfEploeesById(depId);
-        } else {
-            return serv.setOfEmploees();
-        }
+    public String findEmploees(@RequestParam(value = "departmentId", required = false) Integer depId) {
+        return serv.findEmploees(depId).toString();
     }
 }
