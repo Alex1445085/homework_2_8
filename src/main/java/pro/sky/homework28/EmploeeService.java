@@ -1,12 +1,13 @@
 package pro.sky.homework28;
 
+import java.util.Collection;
 import java.util.Set;
 
-public abstract class EmploeeService {
+public interface EmploeeService {
 
-    abstract Emploee maxSalary(Integer salary);
-    abstract Emploee minSalary(Integer salary);
-    abstract Set findEmploees(Integer depId);
-    abstract Set eploeesInDepartment(Integer departament);
-    abstract Set allEmploees();
+     Emploee maxSalary(Integer salary);
+     Emploee minSalary(Integer salary);
+     Set findEmploees(Integer depId);
+     Set eploeesInDepartment(Integer departament);
+     Set allEmploees();
 }
