@@ -11,10 +11,9 @@ import java.util.Set;
 @RestController
 @RequestMapping("/departments")
 public class EmploeeController {
-      EmploeeService serv = new EmploeeServiceImpl();
 
-//    EmploeeService serv;
-//    public EmploeeController(EmploeeService serv) { this.serv = serv; }
+    public final EmploeeService serv;
+    public EmploeeController(EmploeeService serv) { this.serv = serv; }
 
     @GetMapping("/max-salary")
     public String maxSalary(@RequestParam("departmentId") Integer depId) {
@@ -29,5 +28,5 @@ public class EmploeeController {
     @GetMapping("/all")
     public String findEmploees(@RequestParam(value = "departmentId", required = false) Integer depId) {
         return serv.findEmploees(depId).toString();
-    }
+    }//,
 }

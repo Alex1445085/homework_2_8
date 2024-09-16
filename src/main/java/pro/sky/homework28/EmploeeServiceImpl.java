@@ -1,8 +1,15 @@
 package pro.sky.homework28;
 
+import org.springframework.stereotype.Service;
+
 import java.util.*;
 import java.util.stream.Collectors;
+
+@Service
 public class EmploeeServiceImpl implements EmploeeService {
+
+//    private final EmploeeService serv;
+//    public EmploeeServiceImpl(EmploeeService serv) { this.serv = serv; }
 
     private Set<Emploee> emploees = new HashSet<>();
     {
@@ -24,7 +31,7 @@ public class EmploeeServiceImpl implements EmploeeService {
                 .filter(emploee -> Objects.equals(emploee.getDepartmentNo(), depId))
                 .max(Comparator.comparing(Emploee::getSalary))
                 .orElseThrow(() -> new DepartmentNotFoundException("Department not found"));
-        return emploeeInDepartament;//"Наибольшая з/п в отделе #" + depId + " у сотрудника " +
+        return emploeeInDepartament;
     }
 
     @Override
@@ -43,15 +50,15 @@ public class EmploeeServiceImpl implements EmploeeService {
     }
 
     @Override
-    public Set eploeesInDepartment(Integer depId) {
+    public Set eploeesInDepartment(int depId) {  //"Cписок сотрудников в отделе # depId
         Set<Emploee> temp = emploees.stream()
                 .filter(emploee -> Objects.equals(emploee.getDepartmentNo(), depId))
                 .collect(Collectors.toSet());
-        return Collections.unmodifiableSet(temp);          //"Cписок сотрудников в отделе #" + depId + " : " +
+        return Collections.unmodifiableSet(temp);
     }
 
     @Override
-    public Set allEmploees() {
-        return Collections.unmodifiableSet(emploees);      //"Cписок всех сотрудников : " + emploees.toString();
+    public Set allEmploees() {    //"Cписок всех сотрудников
+        return Collections.unmodifiableSet(emploees);
     }
 }
