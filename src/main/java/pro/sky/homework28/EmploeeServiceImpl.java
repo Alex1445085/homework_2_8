@@ -1,46 +1,48 @@
 package pro.sky.homework28;
 
 import org.springframework.stereotype.Service;
-
 import java.util.*;
 import java.util.stream.Collectors;
+
 
 @Service
 public class EmploeeServiceImpl implements EmploeeService {
 
-//    private final EmploeeService serv;
-//    public EmploeeServiceImpl(EmploeeService serv) { this.serv = serv; }
+    private final Map<String, Emploee> emploees = new HashMap<>();
 
-    private Set<Emploee> emploees = new HashSet<>();
     {
-        emploees.add(new Emploee("Ivanov", "Ivan", 1, 86811));
-        emploees.add(new Emploee("Petrov", "Petr", 2, 80000));
-        emploees.add(new Emploee("Ivanov", "Petr", 3, 99100));
-        emploees.add(new Emploee("Kumov", "Ivan", 4, 97600));
-        emploees.add(new Emploee("Gamov", "Egor", 5, 84667));
-        emploees.add(new Emploee("Sizov", "Oleg", 5, 73000));
-        emploees.add(new Emploee("Slikoff", "Mike", 4, 125400));
-        emploees.add(new Emploee("Krotov", "Andr", 3, 95410));
-        emploees.add(new Emploee("Vasin", "Nikolay", 1, 142000));
-        emploees.add(new Emploee("Gorin", "Nikk", 1, 82000));
+        emploees.put("ivanovivan", new Emploee("Ivanov", "Ivan", 1, 86811));
+        emploees.put("petrovpetr", new Emploee("Petrov", "Petr", 2, 80000));
+        emploees.put("ivanovpetr", new Emploee("Ivanov", "Petr", 3, 99100));
+        emploees.put("kumovivan", new Emploee("Kumov", "Ivan", 4, 97600));
+        emploees.put("gamovegor", new Emploee("Gamov", "Egor", 5, 84667));
+        emploees.put("sizovoleg", new Emploee("Sizov", "Oleg", 5, 73000));
+        emploees.put("slikoffmike", new Emploee("Slikoff", "Mike", 4, 125400));
+        emploees.put("krotovandr", new Emploee("Krotov", "Andr", 3, 95410));
+        emploees.put("vasinnikolay", new Emploee("Vasin", "Nikolay", 1, 142000));
+        emploees.put("gorinnikk", new Emploee("Gorin", "Nikk", 1, 82000));
     }
 
     @Override
     public Emploee maxSalary(Integer depId) {
-        Emploee emploeeInDepartament = emploees.stream()
+        Emploee emploeeInDepartment = emploees
+                .values()
+                .stream()
                 .filter(emploee -> Objects.equals(emploee.getDepartmentNo(), depId))
                 .max(Comparator.comparing(Emploee::getSalary))
                 .orElseThrow(() -> new DepartmentNotFoundException("Department not found"));
-        return emploeeInDepartament;
+        return emploeeInDepartment;
     }
 
     @Override
     public Emploee minSalary(Integer depId) {
-        Emploee emploeeInDepartment = emploees.stream()
+        Emploee emploeeInDepartment = emploees
+                .values()
+                .stream()
                 .filter(emploee -> Objects.equals(emploee.getDepartmentNo(), depId))
                 .min(Comparator.comparing(Emploee::getSalary))
                 .orElseThrow(() -> new DepartmentNotFoundException("Department not found"));
-        return  emploeeInDepartment;
+        return emploeeInDepartment;
     }
 
     @Override
@@ -51,7 +53,9 @@ public class EmploeeServiceImpl implements EmploeeService {
 
     @Override
     public Set eploeesInDepartment(int depId) {  //"Cписок сотрудников в отделе # depId
-        Set<Emploee> temp = emploees.stream()
+        Set<Emploee> temp = emploees
+                .values()
+                .stream()
                 .filter(emploee -> Objects.equals(emploee.getDepartmentNo(), depId))
                 .collect(Collectors.toSet());
         return Collections.unmodifiableSet(temp);
@@ -59,6 +63,10 @@ public class EmploeeServiceImpl implements EmploeeService {
 
     @Override
     public Set allEmploees() {    //"Cписок всех сотрудников
-        return Collections.unmodifiableSet(emploees);
+        Set<Emploee> temp = emploees
+                .values()
+                .stream()
+                .collect(Collectors.toSet());
+        return Collections.unmodifiableSet(temp);
     }
 }

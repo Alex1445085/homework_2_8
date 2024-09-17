@@ -1,19 +1,17 @@
 package pro.sky.homework28;
-import jakarta.annotation.PostConstruct;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/departments")
 public class EmploeeController {
 
     public final EmploeeService serv;
-    public EmploeeController(EmploeeService serv) { this.serv = serv; }
+    public EmploeeController(EmploeeService serv) {
+        this.serv = serv;
+    }
 
     @GetMapping("/max-salary")
     public String maxSalary(@RequestParam("departmentId") Integer depId) {
@@ -28,5 +26,5 @@ public class EmploeeController {
     @GetMapping("/all")
     public String findEmploees(@RequestParam(value = "departmentId", required = false) Integer depId) {
         return serv.findEmploees(depId).toString();
-    }//,
+    }
 }
