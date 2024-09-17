@@ -63,10 +63,7 @@ public class EmploeeServiceImpl implements EmploeeService {
 
     @Override
     public Set allEmploees() {    //"Cписок всех сотрудников
-        Set<Emploee> temp = emploees
-                .values()
-                .stream()
-                .collect(Collectors.toSet());
+        Set<Emploee> temp = new HashSet<>(emploees.values());
         return Collections.unmodifiableSet(temp);
     }
 }
