@@ -4,6 +4,9 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.*;
+
 
 @Service
 public class EmploeeServiceImpl implements EmploeeService {
@@ -29,7 +32,7 @@ public class EmploeeServiceImpl implements EmploeeService {
                 .values()
                 .stream()
                 .filter(emploee -> Objects.equals(emploee.getDepartmentNo(), depId))
-                .max(Comparator.comparing(Emploee::getSalary))
+                .max(comparing(Emploee::getSalary))
                 .orElseThrow(() -> new DepartmentNotFoundException("Department not found"));
         return emploeeInDepartment;
     }
@@ -40,30 +43,34 @@ public class EmploeeServiceImpl implements EmploeeService {
                 .values()
                 .stream()
                 .filter(emploee -> Objects.equals(emploee.getDepartmentNo(), depId))
-                .min(Comparator.comparing(Emploee::getSalary))
+                .min(comparing(Emploee::getSalary))
                 .orElseThrow(() -> new DepartmentNotFoundException("Department not found"));
         return emploeeInDepartment;
     }
 
     @Override
-    public Set findEmploees(Integer depId) {
+    public Map<Integer, List<Emploee>> findEmploees(Integer depId) {
         if (depId == null) { return allEmploees(); }
         else { return eploeesInDepartment(depId); }
     }
 
     @Override
-    public Set eploeesInDepartment(int depId) {  //"Cписок сотрудников в отделе # depId
-        Set<Emploee> temp = emploees
+    public Map<Integer, List<Emploee>> eploeesInDepartment(Integer depId) {
+        List<Emploee> temp = emploees
                 .values()
                 .stream()
                 .filter(emploee -> Objects.equals(emploee.getDepartmentNo(), depId))
-                .collect(Collectors.toSet());
-        return Collections.unmodifiableSet(temp);
+                .toList();
+        Map<Integer, List<Emploee>> result = new HashMap<>(Map.of(depId, temp));
+        return Collections.unmodifiableMap(result);
     }
 
     @Override
-    public Set allEmploees() {    //"Cписок всех сотрудников
-        Set<Emploee> temp = new HashSet<>(emploees.values());
-        return Collections.unmodifiableSet(temp);
+    public Map<Integer, List<Emploee>> allEmploees() {
+        Map<Integer, List<Emploee>> temp = emploees
+                .values()
+                .stream()
+                .collect(groupingBy(Emploee::getDepartmentNo));
+        return Collections.unmodifiableMap(temp);
     }
 }
